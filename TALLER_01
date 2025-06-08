@@ -1,1 +1,58 @@
+CREATE DATABASE videojuegos;
+USE videojuegos;
 
+CREATE TABLE Category (
+    name VARCHAR(50) PRIMARY KEY
+);
+-- Se agrega cardinalidad
+CREATE TABLE Product (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    price DECIMAL(10,2),
+    category_name VARCHAR(50),
+    FOREIGN KEY (category_name) REFERENCES Category(name)
+);
+-- Se agrega cardinalidad
+CREATE TABLE Food (
+    product_id INT PRIMARY KEY,
+    expiration_date DATE,
+    calories INT,
+    FOREIGN KEY (product_id) REFERENCES Product(id)
+);
+-- Se agrega cardinalidad
+CREATE TABLE Furniture (
+    product_id INT PRIMARY KEY,
+    manufacture_date DATE,
+    FOREIGN KEY (product_id) REFERENCES Product(id)
+);
+
+CREATE TABLE `Order` (
+    id INT AUTO_INCREMENT PRIMARY KEY
+);
+-- Se agrega cardinalidad
+CREATE TABLE Order_Line (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT,
+    product_id INT,
+    quantity INT,
+    FOREIGN KEY (order_id) REFERENCES `Order`(id),
+    FOREIGN KEY (product_id) REFERENCES Product(id)
+);
+
+INSERT INTO Category (name) VALUES ('Food'), ('Furniture');
+
+INSERT INTO Product (name, price, category_name) VALUES
+('Apple', 0.50, 'Food'),
+('Chair', 25.00, 'Furniture');
+
+INSERT INTO Food (product_id, expiration_date, calories) VALUES
+(1, '2025-12-31', 95);
+
+INSERT INTO Furniture (product_id, manufacture_date) VALUES
+(2, '2024-06-01');
+
+INSERT INTO `Order` (id) VALUES (101);
+
+INSERT INTO Order_Line (order_id, product_id, quantity) VALUES
+(101, 1, 10),
+(101, 2, 1);
